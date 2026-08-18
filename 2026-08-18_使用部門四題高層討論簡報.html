@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>監控派工系統｜高層討論簡報</title>
+  <style>
+    :root { --navy:#071b33; --navy-2:#102c4f; --blue:#0c87c8; --cyan:#55d7df; --lime:#b9e469; --amber:#ffc85b; --red:#fd6c65; --paper:#f5f8fb; --muted:#a9bed2; --ink:#13233a; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#020a14; color:white; font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif; overflow:hidden; }
+    .deck { width:100vw; height:100vh; }
+    .slide { display:none; position:relative; width:100%; height:100%; padding:7vh 8vw 6vh; overflow:hidden; background:linear-gradient(135deg,var(--navy) 0%,#0a2541 58%,#07345a 100%); }
+    .slide.active { display:flex; flex-direction:column; }
+    .slide::before { content:""; position:absolute; width:58vw; height:58vw; right:-28vw; top:-33vw; border:1px solid rgba(85,215,223,.22); border-radius:50%; box-shadow:0 0 0 7vw rgba(85,215,223,.035),0 0 0 14vw rgba(85,215,223,.025); }
+    .slide::after { content:""; position:absolute; width:220px; height:7px; bottom:0; left:8vw; background:linear-gradient(90deg,var(--cyan),var(--lime)); }
+    .kicker { letter-spacing:.16em; color:var(--cyan); font-size:clamp(12px,1.25vw,19px); font-weight:700; margin-bottom:1.2vh; text-transform:uppercase; }
+    h1,h2,h3,p { margin:0; }
+    h1 { font-size:clamp(42px,5.25vw,83px); line-height:1.14; letter-spacing:-.045em; max-width:1000px; }
+    h2 { font-size:clamp(31px,3.5vw,55px); line-height:1.17; letter-spacing:-.035em; max-width:1130px; }
+    h3 { font-size:clamp(16px,1.45vw,23px); line-height:1.3; }
+    .subtitle { margin-top:2.2vh; color:var(--muted); font-size:clamp(18px,1.75vw,27px); line-height:1.55; max-width:850px; }
+    .em { color:var(--lime); }
+    .danger { color:var(--amber); }
+    .source { margin-top:auto; color:#89a4bd; font-size:clamp(11px,1vw,15px); }
+    .meta { position:absolute; right:8vw; bottom:5.6vh; color:#9eb7ca; font-size:clamp(12px,1vw,15px); }
+    .title-slide { justify-content:center; }
+    .title-slide .line { width:86px; height:8px; background:var(--lime); margin:3.3vh 0 2.4vh; }
+    .title-slide .decision { margin-top:5vh; padding:1.4vh 1.5vw; border-left:4px solid var(--cyan); background:rgba(255,255,255,.055); width:max-content; max-width:820px; font-size:clamp(16px,1.55vw,24px); }
+    .grid { display:grid; gap:1.4vw; margin-top:4.5vh; position:relative; z-index:1; }
+    .grid.two { grid-template-columns:1fr 1fr; }
+    .grid.three { grid-template-columns:repeat(3,1fr); }
+    .card { border:1px solid rgba(166,205,231,.22); background:rgba(5,21,39,.56); padding:2.1vh 1.7vw; border-radius:12px; }
+    .card .tag { color:var(--cyan); font-size:clamp(11px,1.05vw,15px); font-weight:700; letter-spacing:.08em; }
+    .card h3 { margin-top:.6vh; }
+    .card p { margin-top:1vh; color:#c7d8e6; font-size:clamp(14px,1.25vw,19px); line-height:1.5; }
+    .card.focus { border-color:rgba(185,228,105,.7); box-shadow:inset 0 0 0 1px rgba(185,228,105,.22); }
+    .statement { margin-top:4.6vh; max-width:1070px; font-size:clamp(23px,2.45vw,38px); line-height:1.42; }
+    .statement strong { color:var(--lime); }
+    .table { display:grid; grid-template-columns:1.05fr 1.05fr 1.45fr; margin-top:4vh; border-top:1px solid rgba(166,205,231,.35); border-left:1px solid rgba(166,205,231,.18); position:relative; z-index:1; }
+    .cell { padding:1.4vh 1.2vw; min-height:10vh; border-right:1px solid rgba(166,205,231,.18); border-bottom:1px solid rgba(166,205,231,.18); font-size:clamp(14px,1.35vw,20px); line-height:1.4; }
+    .head { background:rgba(85,215,223,.11); color:var(--cyan); font-weight:700; }
+    .cell strong { color:var(--lime); }
+    .gates { display:flex; align-items:stretch; gap:.9vw; margin-top:7vh; position:relative; z-index:1; }
+    .gate { flex:1; min-height:27vh; padding:2.3vh 1.45vw; background:rgba(4,21,39,.7); border-top:5px solid #40627c; border-radius:7px; }
+    .gate:nth-child(2) { border-color:var(--amber); box-shadow:0 0 0 1px rgba(255,200,91,.38); }
+    .gate:nth-child(3) { border-color:var(--blue); }
+    .gate:nth-child(4) { border-color:var(--lime); }
+    .gate .num { display:block; color:var(--muted); font-size:clamp(15px,1.35vw,20px); font-weight:700; }
+    .gate h3 { margin-top:1vh; font-size:clamp(19px,1.8vw,28px); }
+    .gate p { margin-top:1.4vh; color:#c8d8e6; font-size:clamp(14px,1.2vw,18px); line-height:1.45; }
+    .arrow { align-self:center; color:var(--cyan); font-size:clamp(22px,2.2vw,36px); }
+    .callout { margin-top:4vh; border-left:5px solid var(--amber); padding:1.3vh 1.4vw; background:rgba(255,200,91,.08); color:#f5d895; max-width:1100px; font-size:clamp(17px,1.65vw,25px); line-height:1.45; }
+    .checklist { display:grid; grid-template-columns:repeat(3,1fr); gap:0 2vw; margin-top:3.8vh; position:relative; z-index:1; }
+    .check { border-bottom:1px solid rgba(166,205,231,.21); padding:1.15vh 0; color:#d6e2ed; font-size:clamp(14px,1.25vw,19px); }
+    .check::before { content:"□"; color:var(--cyan); margin-right:.55em; }
+    .split { display:grid; grid-template-columns:1.2fr .8fr; gap:3.5vw; margin-top:4vh; align-items:start; }
+    .option { margin-bottom:1.4vh; padding:1.6vh 1.3vw; border-left:4px solid #5b7690; background:rgba(4,21,39,.5); }
+    .option.selected { border-color:var(--lime); background:rgba(185,228,105,.10); }
+    .option h3 { display:inline; }
+    .option p { display:inline; color:#c9d8e5; margin-left:.5em; font-size:clamp(14px,1.25vw,19px); }
+    .big-number { color:var(--lime); font-size:clamp(80px,10vw,150px); font-weight:800; line-height:.8; }
+    .side-note { color:#c4d5e3; font-size:clamp(17px,1.65vw,25px); line-height:1.45; }
+    .three-risks { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4vw; margin-top:4.2vh; }
+    .risk { padding:2vh 1.4vw; background:rgba(4,21,39,.64); border-radius:10px; border-bottom:4px solid var(--amber); }
+    .risk h3 { color:var(--amber); }
+    .risk p { color:#c6d7e5; font-size:clamp(14px,1.22vw,18px); line-height:1.45; margin-top:1vh; }
+    .loop { display:flex; gap:1vw; align-items:center; margin:5.5vh auto 0; max-width:1100px; position:relative; z-index:1; }
+    .loop .node { flex:1; text-align:center; padding:2.3vh 1vw; background:rgba(4,21,39,.67); border:1px solid rgba(85,215,223,.42); border-radius:12px; font-size:clamp(16px,1.45vw,22px); font-weight:700; }
+    .loop .node b { display:block; color:var(--cyan); font-size:clamp(12px,1vw,15px); margin-bottom:.7vh; letter-spacing:.07em; }
+    .loop .flow { font-size:clamp(23px,2.1vw,34px); color:var(--lime); }
+    .questions { counter-reset:q; display:grid; grid-template-columns:1fr 1fr; gap:1.4vh 2vw; margin-top:4.2vh; }
+    .question { counter-increment:q; padding:1.5vh 1.4vw; background:rgba(4,21,39,.62); border-left:4px solid var(--cyan); font-size:clamp(16px,1.45vw,22px); line-height:1.36; }
+    .question::before { content:"Q" counter(q); color:var(--lime); font-weight:800; display:block; font-size:clamp(12px,1.05vw,16px); letter-spacing:.07em; margin-bottom:.45vh; }
+    .action { display:grid; grid-template-columns:130px 1fr 180px; gap:1.4vw; align-items:center; padding:1.6vh 0; border-bottom:1px solid rgba(166,205,231,.22); font-size:clamp(16px,1.4vw,21px); }
+    .action .time { color:var(--cyan); font-weight:700; }
+    .action .owner { color:var(--muted); text-align:right; }
+    .nav { position:fixed; z-index:10; right:2.2vw; bottom:2.2vh; display:flex; gap:8px; align-items:center; }
+    .nav button { appearance:none; background:rgba(4,21,39,.78); border:1px solid rgba(166,205,231,.4); border-radius:6px; color:white; padding:.5em .75em; cursor:pointer; font:inherit; }
+    .nav button:hover { border-color:var(--cyan); }
+    .count { color:#b4c9d9; min-width:46px; text-align:center; font-size:14px; }
+    @media (max-width:800px) { .slide { padding:7vh 7vw; } .grid.two,.grid.three,.split,.questions { grid-template-columns:1fr; gap:1.2vh; } .gates,.loop { gap:.4vw; } .gate { padding:1.5vh .8vw; } .table { grid-template-columns:1fr 1fr 1.25fr; } .checklist { grid-template-columns:1fr 1fr; } .action { grid-template-columns:82px 1fr; } .action .owner { grid-column:2; text-align:left; } }
+    @media print { body { overflow:visible; background:white; } .deck { height:auto; } .slide,.slide.active { display:flex; height:100vh; page-break-after:always; } .nav { display:none; } }
+  </style>
+</head>
+<body>
+  <main class="deck" aria-label="監控派工系統高層討論簡報">
+    <section class="slide title-slide active">
+      <div class="kicker">Internal leadership discussion · 2026.08.19</div>
+      <h1>監控派工系統<br><span class="em">先把資料地基釘牢</span></h1>
+      <div class="line"></div>
+      <p class="subtitle">使用部門四題分析：從「建置系統」校正為「既有系統的資料治理＋自動判讀」</p>
+      <div class="decision">本次需要決策：第一階段是否採 <strong class="em">流程跑通＋資料補齊並行，驗收綁資料完整度</strong></div>
+      <p class="source">依據：2026-08-18 使用部門四題分析與整合提問 v2（內部工作稿）</p><span class="meta">高雄辦公室｜啟動會討論版</span>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">01 · Why this matters now</div><h2>四個提問，推翻了原先<br>「從零建系統」的前提</h2>
+      <div class="table">
+        <div class="cell head">從使用部門提問看見的現況</div><div class="cell head">原先假設</div><div class="cell head">對專案的影響</div>
+        <div class="cell">派工系統<strong>已存在且運作中</strong></div><div class="cell">從零建置派工系統</div><div class="cell">工作重點轉為：在既有系統上加上<strong>自動判讀層</strong></div>
+        <div class="cell">發電數據已通；<strong>告警資料未完整</strong></div><div class="cell">監控資料整體可用</div><div class="cell">真正瓶頸在<strong>告警資料品質</strong>，非派工邏輯</div>
+        <div class="cell">未涵蓋全部監控來源</div><div class="cell">範圍尚未確定</div><div class="cell">要管理的不是幾個案場，而是<strong>多套異質監控系統</strong></div>
+      </div>
+      <p class="callout">結論：原四步閉環的第一步只對「發電資料」成立；告警自動派工的鏈條，實際斷在最前端。</p>
+      <p class="source">資料來源：原始分析稿〈零、這四題改寫了我對現況的認知〉</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">02 · Critical dependency</div><h2>這不是四條可並行的工作線，<br>而是四道必須依序通過的關卡</h2>
+      <div class="gates">
+        <div class="gate"><span class="num">① 涵蓋率</span><h3>資料進不進得來</h3><p>系統、案場、設備層級的實際涵蓋範圍。</p></div><span class="arrow">→</span>
+        <div class="gate"><span class="num">② 完整性</span><h3>資料夠不夠用</h3><p>欄位、狀態、時間與設備脈絡是否齊備。</p></div><span class="arrow">→</span>
+        <div class="gate"><span class="num">③ 判讀自動化</span><h3>資料能否變成決策</h3><p>以可調整的規則，把告警轉成可執行工單。</p></div><span class="arrow">→</span>
+        <div class="gate"><span class="num">④ 回饋學習</span><h3>決策能否越用越準</h3><p>用結案結果、誤報與漏報回校規則。</p></div>
+      </div>
+      <p class="callout">在②完成前推③，只會做出寫死的簡單規則；資料一補齊，規則就得全面重做。</p>
+      <p class="source">管理含義：本案應將「資料成熟度」作為排程與驗收的上游約束。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">03 · The bottleneck</div><h2>資料完整性是專案咽喉：<br>缺欄位，就沒有可靠的自動派工</h2>
+      <div class="checklist">
+        <div class="check">告警唯一識別碼／案場代碼</div><div class="check">設備識別、類型、廠牌與機型</div><div class="check">原廠碼＋<strong>標準化告警碼</strong></div>
+        <div class="check">嚴重等級／告警描述</div><div class="check">發生、恢復時間與狀態</div><div class="check">持續時間（派工門檻）</div>
+        <div class="check">資料來源系統</div><div class="check">量測值＋告警門檻</div><div class="check">設備階層與關聯關係</div>
+      </div>
+      <div class="three-risks">
+        <div class="risk"><h3>去抖動／去重</h3><p>避免通訊不穩讓同一告警反覆開單。</p></div>
+        <div class="risk"><h3>父子告警抑制</h3><p>避免一個根因連動開出多張無效工單。</p></div>
+        <div class="risk"><h3>靜默失效偵測</h3><p>通訊中斷是「無資料」，須以心跳或資料新鮮度另行偵測。</p></div>
+      </div>
+      <p class="source">最小欄位集與三項機制均為會議應確認的設計基準，不代表目前已具備。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">04 · Decision required</div><h2>第一階段怎麼定義？<br>建議選 <span class="em">C：對外跑流程，對內驗資料</span></h2>
+      <div class="split">
+        <div>
+          <div class="option"><h3>A｜流程跑通（含人工判讀）</h3><p>較快看到端到端閉環；但早期價值有限，使用單位未必感受改變。</p></div>
+          <div class="option"><h3>B｜只做資料標準化與欄位補齊</h3><p>技術地基最穩；但前期缺乏可展示成果，管理上不易交代。</p></div>
+          <div class="option selected"><h3>C｜流程跑通＋資料補齊並行</h3><p>保住「先求有再求精」的節奏；<strong>驗收以資料完整度與規則可運作性為準</strong>。</p></div>
+        </div>
+        <div><div class="big-number">C</div><p class="side-note">核心不是多做一件事，而是<strong class="em">不讓流程通了</strong>取代<strong class="em">資料可用</strong>成為成功定義。</p></div>
+      </div>
+      <p class="callout">需當場定下的項目：第一階段涵蓋範圍、必要欄位齊全率、規則可調整權限與驗收語句。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">05 · Automation that operations can trust</div><h2>自動化的第一版要可用，<br>規則需要三種來源、且能在現場持續調整</h2>
+      <div class="grid three">
+        <div class="card"><div class="tag">A · COLD START</div><h3>原廠手冊告警分級</h3><p>最快打底，但原廠嚴重度不等於運維出勤優先級。</p></div>
+        <div class="card"><div class="tag">B · CALIBRATION</div><h3>資深工程師經驗</h3><p>貼近真實現場；需把個人知識萃取成可維護的共識規則。</p></div>
+        <div class="card focus"><div class="tag">C · LEARNING</div><h3>歷史工單回推</h3><p>最客觀，但前提是告警與工單資料能對得起來。</p></div>
+      </div>
+      <p class="statement">關鍵治理問題：<strong>誰定規則？誰能改門檻？</strong><br>若每次調整都要由廠商發版，系統不會「越用越準」。</p>
+      <p class="source">建議：使用單位可在權限控管下自行調整門檻，並保留異動紀錄。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">06 · Feedback loop</div><h2>回饋學習不是「結案選一個分類」；<br>它必須能衡量規則是否真的變準</h2>
+      <div class="loop">
+        <div class="node"><b>1</b>告警／人工開單</div><span class="flow">→</span><div class="node"><b>2</b>互斥的結案分類<br>＋處理措施／料件</div><span class="flow">→</span><div class="node"><b>3</b>標記規則版本<br>與誤報原因</div><span class="flow">→</span><div class="node"><b>4</b>每週檢視<br>調整門檻</div>
+      </div>
+      <div class="grid two">
+        <div class="card"><div class="tag">避免資料失真</div><h3>分類要互斥</h3><p>「正常」與「已自行恢復」語意重疊；建議拆為「是否真異常」→「異常／誤判原因」兩層。</p></div>
+        <div class="card focus"><div class="tag">避免只優化一半</div><h3>同時追蹤假陽性與假陰性</h3><p>保留人工開單並標記「系統為何沒抓到」，避免規則過度保守而漏掉真故障。</p></div>
+      </div>
+      <p class="source">回饋資料未具備互斥性、規則版本與人工開單脈絡時，不宜宣稱已建立學習機制。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">07 · Kickoff agenda</div><h2>一小時會議，先拿到這五個答案；<br>沒有答案，就不承諾時程</h2>
+      <div class="questions">
+        <div class="question">必要告警欄位目前有哪些、缺哪些？何時補齊？</div>
+        <div class="question">第一階段涵蓋幾套系統、幾個案場、到哪一層設備？未納入卡在哪？</div>
+        <div class="question">第一階段完成定義是什麼？請用一句可驗收的話說明。</div>
+        <div class="question">去抖動、父子抑制、通訊中斷偵測是否納入設計？</div>
+        <div class="question">使用單位要投入多少人天？規則確認、UAT、教育訓練各由誰負責？</div>
+      </div>
+      <p class="callout">會後書面補：規則調整權限、舊作業並行／停用安排、回饋欄位、通知與值班表、現場回報與離線需求。</p>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">08 · Immediate actions</div><h2>會議結束後，不以「有共識」結案；<br>以可追蹤的資料與責任開始</h2>
+      <div style="margin-top:3.5vh;max-width:1120px;position:relative;z-index:1">
+        <div class="action"><div class="time">會議當日</div><div>取得 Q1–Q5 逐項答覆；決議第一階段採 C，並鎖定驗收指標</div><div class="owner">使用單位＋專案管理</div></div>
+        <div class="action"><div class="time">1 週內</div><div>確認三項技術機制納入與否；盤點涵蓋範圍與未納入卡點</div><div class="owner">派工建置工作線</div></div>
+        <div class="action"><div class="time">2 週內</div><div>完成告警必要欄位規格；確認規則調整權限與現況營運基線</div><div class="owner">告警分析＋使用單位</div></div>
+        <div class="action"><div class="time">3 週內</div><div>完成互斥回饋分類、處理措施欄位與人工開單假陰性標記</div><div class="owner">使用單位提案</div></div>
+      </div>
+      <p class="statement">高層需要守住的不是功能清單，<br>而是<strong>資料可用、責任到人、驗收可判定</strong>。</p>
+      <p class="source">資料來源：原始分析稿〈追蹤事項〉；時限為建議，需於會議確認。</p>
+    </section>
+
+    <section class="slide title-slide">
+      <div class="kicker">Decision close</div><h1>先讓資料能支撐決策，<br>再讓系統自動做決策。</h1>
+      <div class="line"></div><p class="subtitle">建議決議：第一階段採 C；以告警資料完整度、規則可運作性與責任到位，作為流程跑通的必要條件。</p>
+      <div class="decision">會議輸出：範圍、欄位缺口／時程、驗收句、工作線責任人。</div>
+      <p class="source">Internal working draft · 監控派工系統啟動會</p>
+    </section>
+  </main>
+  <div class="nav" aria-label="簡報控制"><button type="button" id="prev" aria-label="上一頁">←</button><span class="count" id="count"></span><button type="button" id="next" aria-label="下一頁">→</button></div>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')]; let current=0; const count=document.querySelector('#count');
+    function show(index){ current=(index+slides.length)%slides.length; slides.forEach((s,i)=>s.classList.toggle('active',i===current)); count.textContent=`${current+1} / ${slides.length}`; document.title=`${current+1}. 監控派工系統｜高層討論簡報`; }
+    document.querySelector('#prev').onclick=()=>show(current-1); document.querySelector('#next').onclick=()=>show(current+1);
+    window.addEventListener('keydown',e=>{ if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(current+1)} if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(current-1)} if(e.key==='Home')show(0); if(e.key==='End')show(slides.length-1); });
+    show(0);
+  </script>
+</body>
+</html>
